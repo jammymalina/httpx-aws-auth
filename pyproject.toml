@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "httpx-aws-auth"
+version = "0.1.0"
+description = "Provides AWS authentication classes to be used with httpx authentication parameter"
+authors = ["Jakub Jantosik <jakub.jantosik@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+httpx = "^0.27.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+black = "^24.4.2"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
