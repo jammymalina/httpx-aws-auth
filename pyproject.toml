@@ -9,11 +9,21 @@ readme = "README.md"
 python = "^3.8"
 httpx = "^0.27.0"
 
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.2"
 black = "^24.4.2"
 isort = "^5.13.2"
+pylint = "^3.2.5"
+mypy = "^1.10.1"
+
+[tool.black]
+line-length = 120
+target-version = ["py38", "py39", "py310", "py311", "py312"]
+include = "\\.pyi?$"
+
+[tool.isort]
+profile = "black"
+known_first_party = ["hdp_aws_auth"]
 
 [build-system]
 requires = ["poetry-core"]

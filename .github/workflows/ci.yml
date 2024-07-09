@@ -22,10 +22,13 @@ jobs:
           poetry install
       - name: Run the code linting
         run: |
-          poetry run lint
+          poetry run black --check .
+          poetry run isort --check httpx_aws_auth tests
+          poetry run mypy httpx_aws_auth
+          poetry run pylint --fail-under=9 httpx_aws_auth tests
       - name: Run the unit tests
         run: |
-          poetry run test
+          poetry run pytest -x tests
       - name: Build the library
         run: |
           poetry build
