@@ -2,7 +2,7 @@ import hashlib
 import hmac
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Generator, Optional
+from typing import Dict, Generator, Optional
 from urllib.parse import quote
 
 import httpx
@@ -31,15 +31,15 @@ class AWSSigV4Auth(httpx.Auth):
         request.headers.update(aws_headers)
         yield request
 
-    def __get_aws_auth_headers(self, request: httpx.Request):
+    def __get_aws_auth_headers(self, request: httpx.Request) -> Dict[str, str]:
         current_time = datetime.now(timezone.utc)
         amzdate = current_time.strftime("%Y%m%dT%H%M%SZ")
         datestamp = current_time.strftime("%Y%m%d")
 
         aws_host = request.url.netloc.decode("utf-8")
 
-        canonical_uri = AWSSigV4Auth.__get_canonical_path(request)
-        canonical_querystring = AWSSigV4Auth.__get_canonical_querystring(request)
+        canonical_uri = self.__get_canonical_path(request)
+        canonical_querystring = self.__get_canonical_querystring(request)
 
         canonical_headers = "host:" + aws_host + "\n" + "x-amz-date:" + amzdate + "\n"
         if self.credentials.session_token:
@@ -66,7 +66,7 @@ class AWSSigV4Auth(httpx.Auth):
         )
 
         algorithm = "AWS4-HMAC-SHA256"
-        credential_scope = datestamp + "/" + self.region + "/" + AWSSigV4Auth.service + "/" + "aws4_request"
+        credential_scope = datestamp + "/" + self.region + "/" + self.service + "/" + "aws4_request"
         string_to_sign = (
             algorithm
             + "\n"
@@ -77,7 +77,7 @@ class AWSSigV4Auth(httpx.Auth):
             + hashlib.sha256(canonical_request.encode("utf-8")).hexdigest()
         )
 
-        signing_key = AWSSigV4Auth.__get_signature_key(
+        signing_key = self.__get_signature_key(
             secret_key=self.credentials.secret_key, datestamp=datestamp, region=self.region
         )
 
@@ -104,24 +104,20 @@ class AWSSigV4Auth(httpx.Auth):
             headers["X-Amz-Security-Token"] = self.credentials.session_token
         return headers
 
-    @classmethod
-    def __sign(cls, key: bytes, msg: str) -> bytes:
+    def __sign(self, key: bytes, msg: str) -> bytes:
         return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
 
-    @classmethod
-    def __get_signature_key(cls, secret_key: str, datestamp: str, region: str) -> bytes:
-        signed_date = AWSSigV4Auth.__sign(("AWS4" + secret_key).encode("utf-8"), datestamp)
-        signed_region = AWSSigV4Auth.__sign(signed_date, region)
-        signed_service = AWSSigV4Auth.__sign(signed_region, cls.service)
-        signature = AWSSigV4Auth.__sign(signed_service, "aws4_request")
+    def __get_signature_key(self, secret_key: str, datestamp: str, region: str) -> bytes:
+        signed_date = self.__sign(("AWS4" + secret_key).encode("utf-8"), datestamp)
+        signed_region = self.__sign(signed_date, region)
+        signed_service = self.__sign(signed_region, self.service)
+        signature = self.__sign(signed_service, "aws4_request")
         return signature
 
-    @classmethod
-    def __get_canonical_path(cls, request: httpx.Request) -> str:
+    def __get_canonical_path(self, request: httpx.Request) -> str:
         return quote(request.url.path if request.url.path else "/", safe="/-_.~")
 
-    @classmethod
-    def __get_canonical_querystring(cls, request: httpx.Request) -> str:
+    def __get_canonical_querystring(self, request: httpx.Request) -> str:
         canonical_querystring = ""
 
         querystring_sorted = "&".join(sorted(request.url.query.decode("utf-8").split("&")))
