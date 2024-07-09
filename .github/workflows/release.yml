@@ -36,9 +36,9 @@ jobs:
       - name: Run the code linting
         run: |
           poetry run black --check .
-          poetry run isort --check pytest_freezeblaster tests
-          poetry run mypy pytest_freezeblaster
-          poetry run pylint --fail-under=9 pytest_freezeblaster tests
+          poetry run isort --check httpx_aws_auth tests
+          poetry run mypy httpx_aws_auth
+          poetry run pylint --fail-under=9 httpx_aws_auth tests
       - name: Run the unit tests
         run: |
           poetry run pytest -x tests
@@ -53,7 +53,7 @@ jobs:
       fail-fast: false
     environment:
       name: release
-      url: https://pypi.org/project/pytest-freezeblaster/
+      url: https://pypi.org/project/httpx-aws-auth/
     permissions:
       id-token: write
 
