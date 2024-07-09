@@ -2,7 +2,7 @@ import hashlib
 import hmac
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Generator
+from typing import Generator, Optional
 from urllib.parse import quote
 
 import httpx
@@ -12,7 +12,7 @@ import httpx
 class AwsCredentials:
     access_key: str
     secret_key: str
-    session_token: str | None = None
+    session_token: Optional[str] = None
     expiration: datetime = field(default_factory=lambda: datetime.max.replace(tzinfo=timezone.utc))
 
 
@@ -52,7 +52,7 @@ class AWSSigV4Auth(httpx.Auth):
         payload_hash = hashlib.sha256(request.content).hexdigest()
 
         canonical_request: str = (
-            request.method
+            str(request.method)
             + "\n"
             + canonical_uri
             + "\n"

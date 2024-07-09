@@ -1,9 +1,9 @@
-from httpx_aws_auth import AwsCredentials, AWSSigV4Auth
-
 from typing import Any
 
 import httpx
 import pytest
+
+from httpx_aws_auth import AwsCredentials, AWSSigV4Auth
 
 
 @pytest.mark.freeze_time("2024-03-14T12:08:40+0000")
