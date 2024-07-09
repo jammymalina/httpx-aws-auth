@@ -429,13 +429,13 @@ dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments
 
 [[package]]
 name = "pytest-freezeblaster"
-version = "0.1.0"
+version = "1.0.0"
 description = "Wrap tests with fixtures in freeze_time"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "pytest_freezeblaster-0.1.0-py3-none-any.whl", hash = "sha256:952344d12f6b8c61d13329cee03edc0136e50c51bb452412f1f1ef8e6adbff04"},
-    {file = "pytest_freezeblaster-0.1.0.tar.gz", hash = "sha256:84ad6326236c8a0a0f0eac681c4f1ed3c5612196df5bd82521442f654bf9d552"},
+    {file = "pytest_freezeblaster-1.0.0-py3-none-any.whl", hash = "sha256:ed7c83cdd3851aaa366b98c40cbc8f18dca5413dd0c280a7b227d64eac6a8e2e"},
+    {file = "pytest_freezeblaster-1.0.0.tar.gz", hash = "sha256:45a98eb952b5ea1077da1bc27bb57a2a43ae03806f67edb76fc69c2a051761a3"},
 ]
 
 [package.dependencies]
@@ -514,4 +514,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "e0145b98c0b17c13119dd70f82b9ba8691b25d88ca05e4a58136988be527a7ad"
+content-hash = "6e8ef010def06a46cd992dbc37ebfd1250a80bfc1d0b1486f338ccbf5969e7f4"
