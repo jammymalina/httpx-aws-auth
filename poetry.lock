@@ -428,19 +428,19 @@ tomli = {version = ">=1", markers = "python_version < \"3.11\""}
 dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
 [[package]]
-name = "pytest-freezegun"
-version = "0.4.2"
+name = "pytest-freezeblaster"
+version = "0.1.0"
 description = "Wrap tests with fixtures in freeze_time"
 optional = false
-python-versions = "*"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "pytest-freezegun-0.4.2.zip", hash = "sha256:19c82d5633751bf3ec92caa481fb5cffaac1787bd485f0df6436fd6242176949"},
-    {file = "pytest_freezegun-0.4.2-py2.py3-none-any.whl", hash = "sha256:5318a6bfb8ba4b709c8471c94d0033113877b3ee02da5bfcd917c1889cde99a7"},
+    {file = "pytest_freezeblaster-0.1.0-py3-none-any.whl", hash = "sha256:952344d12f6b8c61d13329cee03edc0136e50c51bb452412f1f1ef8e6adbff04"},
+    {file = "pytest_freezeblaster-0.1.0.tar.gz", hash = "sha256:84ad6326236c8a0a0f0eac681c4f1ed3c5612196df5bd82521442f654bf9d552"},
 ]
 
 [package.dependencies]
-freezegun = ">0.3"
-pytest = ">=3.0.0"
+freezegun = ">=1.5.1,<2.0.0"
+pytest = ">=6.2.5"
 
 [[package]]
 name = "python-dateutil"
@@ -514,4 +514,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "df1ba88395a20652d6eebf0f223ecbfdeb84dae9118740ecf2e41dbbf19c10d9"
+content-hash = "e0145b98c0b17c13119dd70f82b9ba8691b25d88ca05e4a58136988be527a7ad"
