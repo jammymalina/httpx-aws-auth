@@ -26,6 +26,14 @@ include = "\\.pyi?$"
 profile = "black"
 known_first_party = ["hdp_aws_auth"]
 
+[tool.pylint]
+disable = [
+  "C0301", # Line too long (108/100) (line-too-long)
+  "C0114", # Missing module docstring (missing-module-docstring)
+  "C0115", # Missing class docstring (missing-class-docstring)
+  "C0116", # Missing function or method docstring (missing-function-docstring)
+]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
