@@ -429,13 +429,13 @@ dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments
 
 [[package]]
 name = "pytest-freezeblaster"
-version = "1.0.0"
+version = "1.0.1"
 description = "Wrap tests with fixtures in freeze_time"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "pytest_freezeblaster-1.0.0-py3-none-any.whl", hash = "sha256:ed7c83cdd3851aaa366b98c40cbc8f18dca5413dd0c280a7b227d64eac6a8e2e"},
-    {file = "pytest_freezeblaster-1.0.0.tar.gz", hash = "sha256:45a98eb952b5ea1077da1bc27bb57a2a43ae03806f67edb76fc69c2a051761a3"},
+    {file = "pytest_freezeblaster-1.0.1-py3-none-any.whl", hash = "sha256:60ce63a3f82edd9bb3a8014b39891d64c3d9db953b8a5b0cef7669713e1ef4e7"},
+    {file = "pytest_freezeblaster-1.0.1.tar.gz", hash = "sha256:db926708da48c63fe1e8adf21e5fa0cae4462a53215053ad58d910d7fc5a6ec7"},
 ]
 
 [package.dependencies]
@@ -491,13 +491,13 @@ files = [
 
 [[package]]
 name = "tomlkit"
-version = "0.12.5"
+version = "0.13.0"
 description = "Style preserving TOML library"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "tomlkit-0.12.5-py3-none-any.whl", hash = "sha256:af914f5a9c59ed9d0762c7b64d3b5d5df007448eb9cd2edc8a46b1eafead172f"},
-    {file = "tomlkit-0.12.5.tar.gz", hash = "sha256:eef34fba39834d4d6b73c9ba7f3e4d1c417a4e56f89a7e96e090dd0d24b8fb3c"},
+    {file = "tomlkit-0.13.0-py3-none-any.whl", hash = "sha256:7075d3042d03b80f603482d69bf0c8f345c2b30e41699fd8883227f89972b264"},
+    {file = "tomlkit-0.13.0.tar.gz", hash = "sha256:08ad192699734149f5b97b45f1f18dad7eb1b6d16bc72ad0c2335772650d7b72"},
 ]
 
 [[package]]
@@ -514,4 +514,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "6e8ef010def06a46cd992dbc37ebfd1250a80bfc1d0b1486f338ccbf5969e7f4"
+content-hash = "a712fee6a526615996a5f64d1ef5aea0c251081f3c1b30802fbf6008c9bddb45"
