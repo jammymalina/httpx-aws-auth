@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "httpx-aws-auth"
-version = "0.3.0"
+version = "0.4.0"
 description = "Provides AWS authentication classes to be used with httpx authentication parameter"
 authors = ["Jakub Jantosik <jakub.jantosik@gmail.com>"]
 readme = "README.md"

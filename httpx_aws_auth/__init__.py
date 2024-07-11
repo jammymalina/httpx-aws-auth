@@ -16,7 +16,7 @@ class AwsCredentials:
     expiration: datetime = field(default_factory=lambda: datetime.max.replace(tzinfo=timezone.utc))
 
 
-class AWSSigV4Auth(httpx.Auth):
+class AwsSigV4Auth(httpx.Auth):
     service: str
     credentials: AwsCredentials
     region: str

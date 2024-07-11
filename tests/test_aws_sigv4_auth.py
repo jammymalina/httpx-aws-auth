@@ -3,7 +3,7 @@ from typing import Any
 import httpx
 import pytest
 
-from httpx_aws_auth import AwsCredentials, AWSSigV4Auth
+from httpx_aws_auth import AwsCredentials, AwsSigV4Auth
 
 
 @pytest.mark.freeze_time("2024-03-14T12:08:40+0000")
@@ -16,7 +16,7 @@ def test_aws_request_auth_simple_get(method_name: str) -> None:
         session_token="session_token",
     )
 
-    auth = AWSSigV4Auth(credentials=credentials, region="eu-west-1")
+    auth = AwsSigV4Auth(credentials=credentials, region="eu-west-1")
     request = httpx.Request(
         method=method_name,
         url="https://api.example.com",
@@ -63,7 +63,7 @@ def test_aws_request_auth_get_query_strings(query_params: Any, query_params_stri
     if query_params_string:
         url += "?" + query_params_string
 
-    auth = AWSSigV4Auth(credentials=credentials, region="eu-west-1")
+    auth = AwsSigV4Auth(credentials=credentials, region="eu-west-1")
     request = httpx.Request(
         method="GET",
         url=url,
@@ -96,7 +96,7 @@ def test_aws_request_auth_post_content() -> None:
         session_token="session_token",
     )
 
-    auth = AWSSigV4Auth(credentials=credentials, region="eu-west-1")
+    auth = AwsSigV4Auth(credentials=credentials, region="eu-west-1")
     request = httpx.Request(
         method="POST",
         url="https://api.example.com",
