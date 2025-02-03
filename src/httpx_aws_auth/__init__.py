@@ -225,7 +225,7 @@ class AwsSigV4AuthAssumeRole(httpx.Auth):
     async def get_async_credentials(self) -> None:
         async with self._async_lock:
             if self._async_credentials and not self._async_credentials.is_expired():
-                return self._async_credentials
+                return
 
             async with self._async_session.client("sts", **self._async_client_kwargs) as sts:
                 response = await sts.assume_role(
