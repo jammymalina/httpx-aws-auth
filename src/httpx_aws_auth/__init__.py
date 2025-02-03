@@ -191,8 +191,8 @@ class AwsSigV4AuthAssumeRole(httpx.Auth):
         self._async_session = async_session
         self._client_kwargs = client_kwargs or {}
         self._async_client_kwargs = async_client_kwargs or {}
-        self._credentials: AwsCredentials | None = None
-        self._async_credentials: AwsCredentials | None = None
+        self._credentials: Optional[AwsCredentials] = None
+        self._async_credentials: Optional[AwsCredentials] = None
         self._duration = duration or timedelta(seconds=3600)
         self._refresh_buffer = refresh_buffer or timedelta(seconds=0)
         self._signer = AwsSigV4AuthSigner(service=service, region=region)
