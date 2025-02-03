@@ -179,10 +179,10 @@ class AwsSigV4AuthAssumeRole(httpx.Auth):
         service: str = "execute-api",
         session: Any = None,
         async_session: Any = None,
-        client_kwargs: Dict | None = None,
-        async_client_kwargs: Dict | None = None,
-        duration: timedelta | None = None,
-        refresh_buffer: timedelta | None = None,
+        client_kwargs: Optional[Dict] = None,
+        async_client_kwargs: Optional[Dict] = None,
+        duration: Optional[timedelta] = None,
+        refresh_buffer: Optional[timedelta] = None,
     ) -> None:
         self._role_arn = role_arn
         self._session = session
@@ -218,7 +218,7 @@ class AwsSigV4AuthAssumeRole(httpx.Auth):
             raise ValueError("Please specify the session")
 
         self.get_sync_credentials()
-        aws_headers = self._signer.get_aws_auth_headers(request=request, credentials=self._credentials)
+        aws_headers = self._signer.get_aws_auth_headers(request=request, credentials=self._credentials)  # type: ignore
         request.headers.update(aws_headers)
         yield request
 
@@ -244,6 +244,6 @@ class AwsSigV4AuthAssumeRole(httpx.Auth):
             raise ValueError("Please specify the async session")
 
         await self.get_async_credentials()
-        aws_headers = self._signer.get_aws_auth_headers(request=request, credentials=self._async_credentials)
+        aws_headers = self._signer.get_aws_auth_headers(request=request, credentials=self._async_credentials)  # type: ignore
         request.headers.update(aws_headers)
         yield request

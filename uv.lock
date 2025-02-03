@@ -150,6 +150,7 @@ dev = [
     { name = "pytest-asyncio", version = "0.25.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
     { name = "pytest-freezeblaster", version = "1.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
     { name = "pytest-freezeblaster", version = "2.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+    { name = "pytest-mock" },
     { name = "pytest-timeout" },
     { name = "ruff" },
 ]
@@ -163,6 +164,7 @@ dev = [
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-freezeblaster", specifier = ">=1.0.1" },
+    { name = "pytest-mock", specifier = ">=3.14.0" },
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "ruff", specifier = ">=0.9.4" },
 ]
@@ -341,6 +343,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c8/a7/5ab852b39caf817ff1b40be4a8e5dccf1ead120cf28502a0320c8b9760de/pytest_freezeblaster-2.0.1.tar.gz", hash = "sha256:7c8d4566eb20e3f46bb2830c6111064b2376f964a2d2e0a1540d32c116377553", size = 15761 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d5/1a/c89f9f5740d210677e8693fc23bb86ea5ed2f503ee3b5ec72e6801ee30a7/pytest_freezeblaster-2.0.1-py3-none-any.whl", hash = "sha256:0da3a9ffd57fa8a25a6ac0a222ea0880bea75176ede0a0959d5ec533e8da5c36", size = 2728 },
+]
+
+[[package]]
+name = "pytest-mock"
+version = "3.14.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c6/90/a955c3ab35ccd41ad4de556596fa86685bf4fc5ffcc62d22d856cfd4e29a/pytest-mock-3.14.0.tar.gz", hash = "sha256:2719255a1efeceadbc056d6bf3df3d1c5015530fb40cf347c0f9afac88410bd0", size = 32814 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f2/3b/b26f90f74e2986a82df6e7ac7e319b8ea7ccece1caec9f8ab6104dc70603/pytest_mock-3.14.0-py3-none-any.whl", hash = "sha256:0b72c38033392a5f4621342fe11e9219ac11ec9d375f8e2a0c164539e0d70f6f", size = 9863 },
 ]
 
 [[package]]
