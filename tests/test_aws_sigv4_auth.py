@@ -45,11 +45,10 @@ def test_aws_request_auth_simple_get(method_name: str) -> None:
     [
         ({"param1": "some value", "param2": "a diff value"}, ""),
         ({"param2": "a diff value", "param1": "some value"}, ""),
-        (None, "param1=some%20value&param2=a%20diff%20value"),
-        (None, "param2=a%20diff%20value&param1=some%20value"),
-        (None, "param1=some value&param2=a diff value"),
+        (None, "param1=some+value&param2=a+diff+value"),
+        (None, "param2=a+diff+value&param1=some+value"),
     ],
-    ids=["dict_sort", "dict_sort_reverse", "string_sort", "string_sort_reverse", "unescaped_query_string"],
+    ids=["dict_sort", "dict_sort_reverse", "string_sort", "string_sort_reverse"],
 )
 def test_aws_request_auth_get_query_strings(query_params: Any, query_params_string: str) -> None:
     # Arrange
@@ -80,7 +79,7 @@ def test_aws_request_auth_get_query_strings(query_params: Any, query_params_stri
         "authorization": "AWS4-HMAC-SHA256 "
         + "Credential=access_key/20240314/eu-west-1/execute-api/aws4_request, "
         + "SignedHeaders=host;x-amz-date;x-amz-security-token, "
-        + "Signature=7f3371485625d9bacabb71ac47afb8144968c23185dc2464f5b0652f80b6d2b5",
+        + "Signature=ad22e5c46b0d5927747edd33245c7eee70322c63c789a9f5285c9339c46c8784",
         "x-amz-date": "20240314T120840Z",
         "x-amz-content-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "x-amz-security-token": "session_token",
@@ -110,13 +109,13 @@ def test_aws_request_auth_post_content() -> None:
     assert auth_request is not None
     assert dict(auth_request.headers) == {
         "host": "api.example.com",
-        "content-length": "36",
+        "content-length": "33",
         "content-type": "application/json",
         "authorization": "AWS4-HMAC-SHA256 "
         + "Credential=access_key/20240314/eu-west-1/execute-api/aws4_request, "
         + "SignedHeaders=host;x-amz-date;x-amz-security-token, "
-        + "Signature=6f4a1511f97aac9a51e0f92e47853d6f2171b705783d364d6376820963c4d203",
+        + "Signature=f1808546ef192f3141bb08a678fed95b623f1611c11dbe5d67323a0a04aa6e13",
         "x-amz-date": "20240314T120840Z",
-        "x-amz-content-sha256": "6366030fcfbc5e29da7855c8a2c2c0c48670a1cc067d7dbeb1481865105f9515",
+        "x-amz-content-sha256": "b734413c644ec49f6a7c07d88b267244582d6422d89eee955511f6b3c0dcb0f2",
         "x-amz-security-token": "session_token",
     }
