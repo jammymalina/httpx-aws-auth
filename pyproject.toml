@@ -1,39 +1,55 @@
-[tool.poetry]
+[project]
 name = "httpx-aws-auth"
-version = "0.4.0"
+version = "1.0.0"
 description = "Provides AWS authentication classes to be used with httpx authentication parameter"
-authors = ["Jakub Jantosik <jakub.jantosik@gmail.com>"]
 readme = "README.md"
+authors = [
+    { name = "Jakub Jantosik", email = "jakub.jantosik@gmail.com" }
+]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-httpx = "^0.27.0"
+classifiers = [
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Information Technology',
+    'Operating System :: OS Independent',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Topic :: Internet',
+]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.2.2"
-black = "^24.4.2"
-isort = "^5.13.2"
-pylint = "^3.2.5"
-mypy = "^1.10.1"
-pytest-freezeblaster = "^1.0.1"
+requires-python = ">=3.8.18"
 
-[tool.black]
-line-length = 120
-target-version = ["py38", "py39", "py310", "py311", "py312"]
-include = "\\.pyi?$"
-
-[tool.isort]
-profile = "black"
-known_first_party = ["httpx_aws_auth"]
-
-[tool.pylint]
-disable = [
-  "C0301", # Line too long (108/100) (line-too-long)
-  "C0114", # Missing module docstring (missing-module-docstring)
-  "C0115", # Missing class docstring (missing-class-docstring)
-  "C0116", # Missing function or method docstring (missing-function-docstring)
+dependencies = [
+    "httpx>=0.27.0",
 ]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.14.1",
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.24.0",
+    "pytest-freezeblaster>=1.0.1",
+    "pytest-timeout>=2.3.1",
+    "ruff>=0.9.4",
+]
+
+[tool.ruff]
+line-length = 120
+
+target-version = "py38"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+timeout = 30

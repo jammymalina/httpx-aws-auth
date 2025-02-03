@@ -13,7 +13,9 @@ class AwsCredentials:
     access_key: str
     secret_key: str
     session_token: Optional[str] = None
-    expiration: datetime = field(default_factory=lambda: datetime.max.replace(tzinfo=timezone.utc))
+    expiration: datetime = field(
+        default_factory=lambda: datetime.max.replace(tzinfo=timezone.utc)
+    )
 
 
 class AwsSigV4Auth(httpx.Auth):
@@ -21,12 +23,16 @@ class AwsSigV4Auth(httpx.Auth):
     credentials: AwsCredentials
     region: str
 
-    def __init__(self, credentials: AwsCredentials, region: str, service: str = "execute-api") -> None:
+    def __init__(
+        self, credentials: AwsCredentials, region: str, service: str = "execute-api"
+    ) -> None:
         self.credentials = credentials
         self.region = region
         self.service = service
 
-    def auth_flow(self, request: httpx.Request) -> Generator[httpx.Request, httpx.Response, None]:
+    def auth_flow(
+        self, request: httpx.Request
+    ) -> Generator[httpx.Request, httpx.Response, None]:
         aws_headers = self.__get_aws_auth_headers(request)
         request.headers.update(aws_headers)
         yield request
@@ -43,7 +49,9 @@ class AwsSigV4Auth(httpx.Auth):
 
         canonical_headers = "host:" + aws_host + "\n" + "x-amz-date:" + amzdate + "\n"
         if self.credentials.session_token:
-            canonical_headers += "x-amz-security-token:" + self.credentials.session_token + "\n"
+            canonical_headers += (
+                "x-amz-security-token:" + self.credentials.session_token + "\n"
+            )
 
         signed_headers = "host;x-amz-date"
         if self.credentials.session_token:
@@ -66,7 +74,9 @@ class AwsSigV4Auth(httpx.Auth):
         )
 
         algorithm = "AWS4-HMAC-SHA256"
-        credential_scope = datestamp + "/" + self.region + "/" + self.service + "/" + "aws4_request"
+        credential_scope = (
+            datestamp + "/" + self.region + "/" + self.service + "/" + "aws4_request"
+        )
         string_to_sign = (
             algorithm
             + "\n"
@@ -78,11 +88,15 @@ class AwsSigV4Auth(httpx.Auth):
         )
 
         signing_key = self.__get_signature_key(
-            secret_key=self.credentials.secret_key, datestamp=datestamp, region=self.region
+            secret_key=self.credentials.secret_key,
+            datestamp=datestamp,
+            region=self.region,
         )
 
         string_to_sign_utf8 = string_to_sign.encode("utf-8")
-        signature = hmac.new(signing_key, string_to_sign_utf8, hashlib.sha256).hexdigest()
+        signature = hmac.new(
+            signing_key, string_to_sign_utf8, hashlib.sha256
+        ).hexdigest()
 
         authorization_header = (
             algorithm
@@ -99,7 +113,11 @@ class AwsSigV4Auth(httpx.Auth):
             + signature
         )
 
-        headers = {"Authorization": authorization_header, "x-amz-date": amzdate, "x-amz-content-sha256": payload_hash}
+        headers = {
+            "Authorization": authorization_header,
+            "x-amz-date": amzdate,
+            "x-amz-content-sha256": payload_hash,
+        }
         if self.credentials.session_token:
             headers["X-Amz-Security-Token"] = self.credentials.session_token
         return headers
@@ -107,7 +125,9 @@ class AwsSigV4Auth(httpx.Auth):
     def __sign(self, key: bytes, msg: str) -> bytes:
         return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
 
-    def __get_signature_key(self, secret_key: str, datestamp: str, region: str) -> bytes:
+    def __get_signature_key(
+        self, secret_key: str, datestamp: str, region: str
+    ) -> bytes:
         signed_date = self.__sign(("AWS4" + secret_key).encode("utf-8"), datestamp)
         signed_region = self.__sign(signed_date, region)
         signed_service = self.__sign(signed_region, self.service)
@@ -120,7 +140,9 @@ class AwsSigV4Auth(httpx.Auth):
     def __get_canonical_querystring(self, request: httpx.Request) -> str:
         canonical_querystring = ""
 
-        querystring_sorted = "&".join(sorted(request.url.query.decode("utf-8").split("&")))
+        querystring_sorted = "&".join(
+            sorted(request.url.query.decode("utf-8").split("&"))
+        )
 
         for query_param in querystring_sorted.split("&"):
             key_val_split = query_param.split("=", 1)
