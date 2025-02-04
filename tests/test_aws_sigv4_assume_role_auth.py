@@ -54,6 +54,8 @@ def test_sync_assume_role(mocker: MockerFixture, freezer: typing.Any, method_nam
             "x-amz-security-token": "session_token",
         }
 
+    assert sts_mock.assume_role.call_count == 1
+
     freezer.move_to(now + timedelta(hours=3))
 
     auth_request = next(auth.sync_auth_flow(request), None)
@@ -124,6 +126,8 @@ async def test_async_assume_role(mocker: MockerFixture, freezer: typing.Any, met
             "x-amz-security-token": "session_token",
         }
 
+    assert sts_mock.assume_role.await_count == 1
+
     freezer.move_to(now + timedelta(hours=3))
 
     auth_request = await auth.async_auth_flow(request).__anext__()
@@ -140,4 +144,4 @@ async def test_async_assume_role(mocker: MockerFixture, freezer: typing.Any, met
         "x-amz-security-token": "session_token",
     }
 
-    assert sts_mock.assume_role.call_count == 2
+    assert sts_mock.assume_role.await_count == 2
