@@ -5,7 +5,7 @@ import httpx
 import pytest
 from pytest_mock import MockerFixture
 
-from httpx_aws_auth import AwsSigV4AuthAssumeRole
+from httpx_aws_auth import AwsSigV4AssumeRoleAuth
 
 
 @pytest.mark.freeze_time("2024-03-14T12:08:40+0000")
@@ -29,7 +29,7 @@ def test_sync_assume_role(mocker: MockerFixture, freezer: typing.Any, method_nam
     session_mock = mocker.Mock()
     session_mock.client = mocker.Mock(return_value=sts_mock)
 
-    auth = AwsSigV4AuthAssumeRole(
+    auth = AwsSigV4AssumeRoleAuth(
         session=session_mock, role_arn="arn:aws:iam::123456789012:role/test-role", region="eu-west-1"
     )
     request = httpx.Request(
@@ -99,7 +99,7 @@ async def test_async_assume_role(mocker: MockerFixture, freezer: typing.Any, met
     session_mock = mocker.Mock()
     session_mock.client = mocker.Mock(return_value=sts_mock_context)
 
-    auth = AwsSigV4AuthAssumeRole(
+    auth = AwsSigV4AssumeRoleAuth(
         async_session=session_mock, role_arn="arn:aws:iam::123456789012:role/test-role", region="eu-west-1"
     )
     request = httpx.Request(

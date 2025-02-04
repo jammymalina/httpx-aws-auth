@@ -171,7 +171,7 @@ class AwsSigV4Auth(httpx.Auth):
         yield request
 
 
-class AwsSigV4AuthAssumeRole(httpx.Auth):
+class AwsSigV4AssumeRoleAuth(httpx.Auth):
     def __init__(
         self,
         region: str,

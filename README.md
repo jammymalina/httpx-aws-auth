@@ -5,7 +5,7 @@
 This module provides AWS Signature Version 4 (SigV4) authentication for HTTPX, supporting both synchronous and asynchronous authentication flows. It includes two main classes:
 
 - `AwsSigV4Auth`: For direct AWS credential authentication
-- `AwsSigV4AuthAssumeRole`: For authentication using AWS IAM Role assumption
+- `AwsSigV4AssumeRoleAuth`: For authentication using AWS IAM Role assumption
 
 ## Features
 
@@ -55,14 +55,14 @@ response = client.get('https://your-api-endpoint.com')
 
 ```python
 import boto3
-from your_module import AwsSigV4AuthAssumeRole
+from your_module import AwsSigV4AssumeRoleAuth
 
 # Create AWS session
 session = boto3.Session()
 
 # Create an authenticated client with role assumption
 client = httpx.Client(
-    auth=AwsSigV4AuthAssumeRole(
+    auth=AwsSigV4AssumeRoleAuth(
         region='us-west-2',
         role_arn='arn:aws:iam::123456789012:role/YourRole',
         session=session,
@@ -78,14 +78,14 @@ response = client.get('https://your-api-endpoint.com')
 
 ```python
 import aioboto3
-from your_module import AwsSigV4AuthAssumeRole
+from your_module import AwsSigV4AssumeRoleAuth
 
 # Create async AWS session
 async_session = aioboto3.Session()
 
 # Create an authenticated async client with role assumption
 async_client = httpx.AsyncClient(
-    auth=AwsSigV4AuthAssumeRole(
+    auth=AwsSigV4AssumeRoleAuth(
         region='us-west-2',
         role_arn='arn:aws:iam::123456789012:role/YourRole',
         async_session=async_session,
@@ -105,7 +105,7 @@ response = await async_client.get('https://your-api-endpoint.com')
 - `region`: AWS region
 - `service`: AWS service name (default: 'execute-api')
 
-### AwsSigV4AuthAssumeRole
+### AwsSigV4AssumeRoleAuth
 
 - `region`: AWS region
 - `role_arn`: IAM Role ARN to assume
