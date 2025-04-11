@@ -1,6 +1,6 @@
 [project]
 name = "httpx-aws-auth"
-version = "2.0.0"
+version = "3.0.0"
 description = "Provides AWS authentication classes to be used with httpx authentication parameter"
 readme = "README.md"
 authors = [
@@ -24,7 +24,7 @@ classifiers = [
     'Topic :: Internet',
 ]
 
-requires-python = ">=3.8.18"
+requires-python = ">=3.9"
 
 dependencies = [
     "httpx>=0.28.0",
@@ -36,13 +36,13 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
-    "mypy>=1.14.1",
-    "pytest>=8.3.4",
-    "pytest-asyncio>=0.24.0",
+    "mypy>=1.15.0",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
     "pytest-freezeblaster>=1.0.1",
     "pytest-mock>=3.14.0",
     "pytest-timeout>=2.3.1",
-    "ruff>=0.9.4",
+    "ruff>=0.11.5",
 ]
 
 [tool.ruff]

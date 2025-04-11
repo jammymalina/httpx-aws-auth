@@ -55,7 +55,7 @@ response = client.get('https://your-api-endpoint.com')
 
 ```python
 import boto3
-from your_module import AwsSigV4AssumeRoleAuth
+from httpx_aws_auth import AwsSigV4AssumeRoleAuth
 
 # Create AWS session
 session = boto3.Session()
@@ -78,7 +78,7 @@ response = client.get('https://your-api-endpoint.com')
 
 ```python
 import aioboto3
-from your_module import AwsSigV4AssumeRoleAuth
+from httpx_aws_auth import AwsSigV4AssumeRoleAuth
 
 # Create async AWS session
 async_session = aioboto3.Session()
@@ -94,7 +94,8 @@ async_client = httpx.AsyncClient(
 )
 
 # Make an async request
-response = await async_client.get('https://your-api-endpoint.com')
+async with async_client as client:
+    response = await client.get('https://your-api-endpoint.com')
 ```
 
 ## Configuration Options
