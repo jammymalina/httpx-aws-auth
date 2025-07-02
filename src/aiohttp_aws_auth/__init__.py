@@ -5,17 +5,17 @@ import threading
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
-from typing import Any, AsyncGenerator, Dict, Generator, Optional
+from typing import Any
 from urllib.parse import quote
 
-import httpx
+import aiohttp
 
 
 @dataclass
 class AwsCredentials:
     access_key: str
     secret_key: str
-    session_token: Optional[str] = None
+    session_token: str | None = None
     expiration: datetime = field(default_factory=lambda: datetime.max.replace(tzinfo=timezone.utc))
 
     def is_expired(self) -> bool:
@@ -23,7 +23,7 @@ class AwsCredentials:
         return current_time >= self.expiration
 
     @classmethod
-    def from_assume_role_credentials(cls, credentials: Dict, refresh_buffer: timedelta) -> "AwsCredentials":
+    def from_assume_role_credentials(cls, credentials: dict, refresh_buffer: timedelta) -> "AwsCredentials":
         access_key = credentials["AccessKeyId"]
         secret_key = credentials["SecretAccessKey"]
         session_token = credentials.get("SessionToken")
@@ -46,12 +46,12 @@ class AwsSigV4AuthSigner:
         self._service = service
         self._region = region
 
-    def get_aws_auth_headers(self, request: httpx.Request, credentials: AwsCredentials) -> Dict[str, str]:
+    async def get_aws_auth_headers(self, request: aiohttp.ClientRequest, credentials: AwsCredentials) -> dict[str, str]:
         current_time = datetime.now(timezone.utc)
         amzdate = current_time.strftime("%Y%m%dT%H%M%SZ")
         datestamp = current_time.strftime("%Y%m%d")
 
-        aws_host = request.url.netloc.decode("utf-8")
+        aws_host = request.url.raw_authority
 
         canonical_uri = self._get_canonical_path(request)
         canonical_querystring = self._get_canonical_querystring(request)
@@ -64,7 +64,11 @@ class AwsSigV4AuthSigner:
         if credentials.session_token:
             signed_headers += ";x-amz-security-token"
 
-        payload_hash = hashlib.sha256(request.content).hexdigest()
+        if isinstance(request.body, bytes):
+            payload_bytes = request.body
+        else:
+            payload_bytes = await request.body.as_bytes()
+        payload_hash = hashlib.sha256(payload_bytes).hexdigest()
 
         canonical_request: str = (
             str(request.method)
@@ -135,13 +139,13 @@ class AwsSigV4AuthSigner:
         signature = self.__sign(signed_service, "aws4_request")
         return signature
 
-    def _get_canonical_path(self, request: httpx.Request) -> str:
+    def _get_canonical_path(self, request: aiohttp.ClientRequest) -> str:
         return quote(request.url.path if request.url.path else "/", safe="/-_.~")
 
-    def _get_canonical_querystring(self, request: httpx.Request) -> str:
+    def _get_canonical_querystring(self, request: aiohttp.ClientRequest) -> str:
         canonical_querystring = ""
 
-        querystring_sorted = "&".join(sorted(request.url.query.decode("utf-8").split("&")))
+        querystring_sorted = "&".join(sorted(request.url.query_string.split("&")))
 
         for query_param in querystring_sorted.split("&"):
             key_val_split = query_param.split("=", 1)
@@ -160,18 +164,18 @@ class AwsSigV4AuthSigner:
         return canonical_querystring
 
 
-class AwsSigV4Auth(httpx.Auth):
+class AwsSigV4Auth:
     def __init__(self, credentials: AwsCredentials, region: str, service: str = "execute-api") -> None:
         self._credentials = credentials
         self._signer = AwsSigV4AuthSigner(service=service, region=region)
 
-    def auth_flow(self, request: httpx.Request) -> Generator[httpx.Request, httpx.Response, None]:
-        aws_headers = self._signer.get_aws_auth_headers(request=request, credentials=self._credentials)
-        request.headers.update(aws_headers)
-        yield request
+    async def __call__(self, req: aiohttp.ClientRequest, handler: aiohttp.ClientHandlerType) -> aiohttp.ClientResponse:
+        aws_headers = await self._signer.get_aws_auth_headers(request=req, credentials=self._credentials)
+        req.headers.update(aws_headers)
+        return await handler(req)
 
 
-class AwsSigV4AssumeRoleAuth(httpx.Auth):
+class AwsSigV4AssumeRoleAuth:
     def __init__(
         self,
         region: str,
@@ -179,10 +183,10 @@ class AwsSigV4AssumeRoleAuth(httpx.Auth):
         service: str = "execute-api",
         session: Any = None,
         async_session: Any = None,
-        client_kwargs: Optional[Dict] = None,
-        async_client_kwargs: Optional[Dict] = None,
-        duration: Optional[timedelta] = None,
-        refresh_buffer: Optional[timedelta] = None,
+        client_kwargs: dict | None = None,
+        async_client_kwargs: dict | None = None,
+        duration: timedelta | None = None,
+        refresh_buffer: timedelta | None = None,
     ) -> None:
         self._role_arn = role_arn
         self._session = session
@@ -191,36 +195,11 @@ class AwsSigV4AssumeRoleAuth(httpx.Auth):
         self._async_session = async_session
         self._client_kwargs = client_kwargs or {}
         self._async_client_kwargs = async_client_kwargs or {}
-        self._credentials: Optional[AwsCredentials] = None
-        self._async_credentials: Optional[AwsCredentials] = None
+        self._credentials: AwsCredentials | None = None
+        self._async_credentials: AwsCredentials | None = None
         self._duration = duration or timedelta(seconds=3600)
         self._refresh_buffer = refresh_buffer or timedelta(seconds=0)
         self._signer = AwsSigV4AuthSigner(service=service, region=region)
-
-    def get_sync_credentials(self) -> None:
-        with self._lock:
-            if self._credentials and not self._credentials.is_expired():
-                return
-            sts = self._session.client("sts", **self._client_kwargs)
-            response = sts.assume_role(
-                RoleArn=self._role_arn,
-                RoleSessionName=str(uuid.uuid4()),
-                DurationSeconds=int(self._duration.total_seconds()),
-            )
-
-            self._credentials = AwsCredentials.from_assume_role_credentials(
-                response["Credentials"],
-                refresh_buffer=self._refresh_buffer,
-            )
-
-    def sync_auth_flow(self, request: httpx.Request) -> Generator[httpx.Request, httpx.Response, None]:
-        if self._session is None:
-            raise ValueError("Please specify the session")
-
-        self.get_sync_credentials()
-        aws_headers = self._signer.get_aws_auth_headers(request=request, credentials=self._credentials)  # type: ignore
-        request.headers.update(aws_headers)
-        yield request
 
     async def get_async_credentials(self) -> None:
         async with self._async_lock:
@@ -239,11 +218,11 @@ class AwsSigV4AssumeRoleAuth(httpx.Auth):
                     refresh_buffer=self._refresh_buffer,
                 )
 
-    async def async_auth_flow(self, request: httpx.Request) -> AsyncGenerator[httpx.Request, httpx.Response]:
+    async def __call__(self, req: aiohttp.ClientRequest, handler: aiohttp.ClientHandlerType) -> aiohttp.ClientResponse:
         if self._async_session is None:
             raise ValueError("Please specify the async session")
 
         await self.get_async_credentials()
-        aws_headers = self._signer.get_aws_auth_headers(request=request, credentials=self._async_credentials)  # type: ignore
-        request.headers.update(aws_headers)
-        yield request
+        aws_headers = await self._signer.get_aws_auth_headers(request=req, credentials=self._async_credentials)  # type: ignore
+        req.headers.update(aws_headers)
+        return await handler(req)

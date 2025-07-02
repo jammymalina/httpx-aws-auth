@@ -1,8 +1,8 @@
-# httpx-aws-auth
+# aiohttp-aws-auth
 
 ## Overview
 
-This module provides AWS Signature Version 4 (SigV4) authentication for HTTPX, supporting both synchronous and asynchronous authentication flows. It includes two main classes:
+This module provides AWS Signature Version 4 (SigV4) authentication for aiohttp. It includes two main classes:
 
 - `AwsSigV4Auth`: For direct AWS credential authentication
 - `AwsSigV4AssumeRoleAuth`: For authentication using AWS IAM Role assumption
@@ -118,6 +118,6 @@ async with async_client as client:
 
 ## Dependencies
 
-- HTTPX
+- aiohttp
 - boto3 (for synchronous authentication)
 - aioboto3 (for asynchronous authentication)
