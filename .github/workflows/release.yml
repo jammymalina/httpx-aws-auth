@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
     environment:
       name: release
-      url: https://pypi.org/project/aiohttp-aws-auth/
+      url: https://pypi.org/project/httpx-aws-auth/
     permissions:
       id-token: write
 

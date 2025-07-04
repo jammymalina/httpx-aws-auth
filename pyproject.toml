@@ -1,7 +1,7 @@
 [project]
-name = "aiohttp-aws-auth"
-version = "0.0.1"
-description = "Provides AWS authentication middlewares to be used with aiohttp"
+name = "httpx-aws-auth"
+version = "4.0.1"
+description = "Provides AWS authentication classes to be used with httpx authentication parameter"
 readme = "README.md"
 authors = [
     { name = "Jakub Jantosik", email = "jakub.jantosik@gmail.com" }
@@ -25,7 +25,7 @@ classifiers = [
 requires-python = ">=3.10"
 
 dependencies = [
-    "aiohttp>=3.12.0",
+    "httpx>=0.28.0",
 ]
 
 [build-system]
