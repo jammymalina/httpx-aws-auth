@@ -55,16 +55,16 @@ wheels = [
 
 [[package]]
 name = "freezeblaster"
-version = "0.4.0"
+version = "0.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "packaging" },
     { name = "python-dateutil" },
     { name = "types-python-dateutil" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/35/9f/3c7845395e0ea638979906b3ac2aed863e0c4b772e0c67359c31368fa3a5/freezeblaster-0.4.0.tar.gz", hash = "sha256:74d4a0bbc91fa5022113c5aa2d2b4a5274844fa9d9fc0f3cd41961fdd15d4bb4", size = 25378, upload-time = "2025-06-02T20:53:14.047Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/de/78/1987efefa6637d6a18a724cdc315fe73c4e858ad256672b931404321bd82/freezeblaster-0.6.0.tar.gz", hash = "sha256:6c63dd07e835668846c9f8848c73c52cef672dab2b4f3c2443682c881782ef23", size = 9146, upload-time = "2025-10-13T16:54:52.07Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c2/e1/a88b824a570aea64aaaa1861393cc5b0b6100324a8a09560a94c020afb4e/freezeblaster-0.4.0-py3-none-any.whl", hash = "sha256:d198b5b71c52bc5aac8e9708da5fdff4a84329dc1ae0091922ea0671ba1bee19", size = 10169, upload-time = "2025-06-02T20:53:12.852Z" },
+    { url = "https://files.pythonhosted.org/packages/ad/41/35f4010671199fb210b2cf4617d746ee9ce6e69c520d82c0464339086f5c/freezeblaster-0.6.0-py3-none-any.whl", hash = "sha256:8412663fecd22f56d33c17de2a8fb75fdaa97c260cdaa655e9a113797874e01a", size = 9680, upload-time = "2025-10-13T16:54:51.052Z" },
 ]
 
 [[package]]
@@ -106,7 +106,7 @@ wheels = [
 
 [[package]]
 name = "httpx-aws-auth"
-version = "4.1.0"
+version = "4.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },
@@ -131,7 +131,7 @@ dev = [
     { name = "mypy", specifier = ">=1.18.2" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-asyncio", specifier = ">=1.2.0" },
-    { name = "pytest-freezeblaster", specifier = ">=2.0.4" },
+    { name = "pytest-freezeblaster", specifier = ">=2.1.0" },
     { name = "pytest-mock", specifier = ">=3.15.1" },
     { name = "pytest-timeout", specifier = ">=2.4.0" },
     { name = "ruff", specifier = ">=0.14.0" },
@@ -279,15 +279,15 @@ wheels = [
 
 [[package]]
 name = "pytest-freezeblaster"
-version = "2.0.4"
+version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "freezeblaster" },
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d8/5e/c0ec750a193ae5666f03c36ae437f680c82886b085d976e74dd3cbb9dfd6/pytest_freezeblaster-2.0.4.tar.gz", hash = "sha256:b7435da9870030a6e8988a1ec2b0011814d5d34eb9df0c980ed12a1aca8a4d61", size = 25316, upload-time = "2025-06-02T21:13:45.046Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ed/15/e2c64d0007f87b50d71166bd501b423aad6cc696a58ff67f449b5dc1ca90/pytest_freezeblaster-2.1.0.tar.gz", hash = "sha256:b65151cba75296e4fa06d8298640fde64a1ff0f885bda81f2cf204d1fbd0d853", size = 2077, upload-time = "2025-10-13T17:07:04.095Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/24/e1/4c8dd7415047d86e0ee8c6ef1abbf994c3cab242fda45040c3fea11d69a9/pytest_freezeblaster-2.0.4-py3-none-any.whl", hash = "sha256:8bc7db545e93e3f438af6176b08535a85f4af3ee6ddc6a96474f1641bd0d37f8", size = 2881, upload-time = "2025-06-02T21:13:43.839Z" },
+    { url = "https://files.pythonhosted.org/packages/7a/7b/715d468e273d69bc25820588a62181df4db55d435b99fb5591087425a453/pytest_freezeblaster-2.1.0-py3-none-any.whl", hash = "sha256:ee83db7a4565ae1f4c7fa688281b3f50b1d1b860e90610dddb2b16db5964405c", size = 3160, upload-time = "2025-10-13T17:07:02.772Z" },
 ]
 
 [[package]]
