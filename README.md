@@ -55,6 +55,7 @@ response = client.get('https://your-api-endpoint.com')
 
 ```python
 import boto3
+import httpx
 from httpx_aws_auth import AwsSigV4AssumeRoleAuth
 
 # Create AWS session
@@ -78,6 +79,7 @@ response = client.get('https://your-api-endpoint.com')
 
 ```python
 import aioboto3
+import httpx
 from httpx_aws_auth import AwsSigV4AssumeRoleAuth
 
 # Create async AWS session
